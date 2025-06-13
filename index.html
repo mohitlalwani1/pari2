@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Happy Birthday Paru! 🎉</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Comic Sans MS", cursive, sans-serif;
+        background: linear-gradient(
+          135deg,
+          #ff9a9e 0%,
+          #fecfef 50%,
+          #fecfef 100%
+        );
+        min-height: 100vh;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .video-container {
+        width: 100%;
+        max-width: 800px;
+        height: 600px;
+        background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+        border-radius: 20px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      }
+
+      .scene {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transform: scale(0.8);
+        transition: all 1s ease-in-out;
+      }
+
+      .scene.active {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      .character {
+        width: 120px;
+        height: 200px;
+        position: relative;
+        margin: 0 40px;
+      }
+
+      .character-body {
+        width: 80px;
+        height: 120px;
+        background: #ff6b6b;
+        border-radius: 40px 40px 20px 20px;
+        position: relative;
+        margin: 0 auto;
+        animation: breathe 3s ease-in-out infinite;
+      }
+
+      .character-head {
+        width: 70px;
+        height: 70px;
+        background: #ffcc99;
+        border-radius: 50%;
+        position: absolute;
+        top: -35px;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 3px solid #fff;
+      }
+
+      .character-face {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .eyes {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 8px;
+      }
+
+      .eye {
+        width: 8px;
+        height: 8px;
+        background: #333;
+        border-radius: 50%;
+        animation: blink 4s infinite;
+      }
+
+      .mouth {
+        width: 20px;
+        height: 10px;
+        border: 2px solid #333;
+        border-top: none;
+        border-radius: 0 0 20px 20px;
+        animation: smile 2s ease-in-out infinite alternate;
+      }
+
+      .character-arms {
+        position: absolute;
+        top: 30px;
+      }
+
+      .arm {
+        width: 40px;
+        height: 15px;
+        background: #ffcc99;
+        border-radius: 10px;
+        position: absolute;
+      }
+
+      .arm-left {
+        left: -35px;
+        transform: rotate(-30deg);
+        animation: wave 2s ease-in-out infinite;
+      }
+
+      .arm-right {
+        right: -35px;
+        transform: rotate(30deg);
+      }
+
+      .paru-character .character-body {
+        background: #ff9ff3;
+      }
+
+      .paru-character .character-head {
+        background: #ffcc99;
+      }
+
+      .plant-pot {
+        width: 60px;
+        height: 80px;
+        background: #8b4513;
+        border-radius: 0 0 30px 30px;
+        position: relative;
+        margin: 0 auto;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        animation: plantGrow 3s ease-out;
+      }
+
+      .plant {
+        position: absolute;
+        bottom: 70px;
+        left: 50%;
+        transform: translateX(-50%);
+        animation: plantSway 3s ease-in-out infinite;
+      }
+
+      .stem {
+        width: 4px;
+        height: 40px;
+        background: #4caf50;
+        margin: 0 auto;
+      }
+
+      .leaves {
+        position: absolute;
+        top: -5px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .leaf {
+        width: 20px;
+        height: 15px;
+        background: #4caf50;
+        border-radius: 0 100% 0 100%;
+        position: absolute;
+        animation: leafGrow 2s ease-out;
+      }
+
+      .leaf:nth-child(1) {
+        transform: rotate(-45deg);
+        left: -15px;
+      }
+
+      .leaf:nth-child(2) {
+        transform: rotate(45deg);
+        right: -15px;
+      }
+
+      .leaf:nth-child(3) {
+        transform: rotate(-20deg);
+        left: -10px;
+        top: -10px;
+      }
+
+      .leaf:nth-child(4) {
+        transform: rotate(20deg);
+        right: -10px;
+        top: -10px;
+      }
+
+      .speech-bubble {
+        position: absolute;
+        background: #fff;
+        border-radius: 20px;
+        padding: 15px 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: bubbleAppear 1s ease-out forwards;
+      }
+
+      .speech-bubble::after {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 30px;
+        width: 0;
+        height: 0;
+        border: 10px solid transparent;
+        border-top-color: #fff;
+      }
+
+      .friend-bubble {
+        top: -80px;
+        left: -50px;
+        background: #ff6b6b;
+        color: white;
+        animation-delay: 1s;
+      }
+
+      .friend-bubble::after {
+        border-top-color: #ff6b6b;
+      }
+
+      .paru-bubble {
+        top: -80px;
+        right: -50px;
+        background: #ff9ff3;
+        color: white;
+        animation-delay: 4s;
+      }
+
+      .paru-bubble::after {
+        border-top-color: #ff9ff3;
+        left: auto;
+        right: 30px;
+      }
+
+      .hearts {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+      }
+
+      .heart {
+        position: absolute;
+        color: #ff69b4;
+        font-size: 20px;
+        animation: floatHeart 3s ease-out infinite;
+        opacity: 0;
+      }
+
+      .title {
+        position: absolute;
+        top: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 32px;
+        font-weight: bold;
+        color: #fff;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        opacity: 0;
+        animation: titleAppear 2s ease-out forwards;
+        animation-delay: 0.5s;
+      }
+
+      .controls {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 15px;
+      }
+
+      .control-btn {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        border: 2px solid white;
+        padding: 10px 20px;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+      }
+
+      .control-btn:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateY(-2px);
+      }
+
+      .control-btn:active {
+        transform: translateY(0);
+      }
+
+      /* Animations */
+      @keyframes breathe {
+        0%,
+        100% {
+          transform: scaleY(1);
+        }
+        50% {
+          transform: scaleY(1.05);
+        }
+      }
+
+      @keyframes blink {
+        0%,
+        90%,
+        100% {
+          height: 8px;
+        }
+        95% {
+          height: 2px;
+        }
+      }
+
+      @keyframes smile {
+        0% {
+          width: 20px;
+        }
+        100% {
+          width: 25px;
+        }
+      }
+
+      @keyframes wave {
+        0%,
+        100% {
+          transform: rotate(-30deg);
+        }
+        50% {
+          transform: rotate(-60deg);
+        }
+      }
+
+      @keyframes plantGrow {
+        0% {
+          transform: scale(0) translateY(50px);
+        }
+        100% {
+          transform: scale(1) translateY(0);
+        }
+      }
+
+      @keyframes plantSway {
+        0%,
+        100% {
+          transform: translateX(-50%) rotate(0deg);
+        }
+        50% {
+          transform: translateX(-50%) rotate(5deg);
+        }
+      }
+
+      @keyframes leafGrow {
+        0% {
+          transform: scale(0) rotate(var(--rotation));
+        }
+        100% {
+          transform: scale(1) rotate(var(--rotation));
+        }
+      }
+
+      @keyframes bubbleAppear {
+        0% {
+          opacity: 0;
+          transform: translateY(20px) scale(0.8);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      @keyframes floatHeart {
+        0% {
+          opacity: 0;
+          transform: translateY(0) scale(0.5);
+        }
+        20% {
+          opacity: 1;
+          transform: translateY(-20px) scale(1);
+        }
+        100% {
+          opacity: 0;
+          transform: translateY(-100px) scale(1.2) rotate(360deg);
+        }
+      }
+
+      @keyframes titleAppear {
+        0% {
+          opacity: 0;
+          transform: translateX(-50%) translateY(-30px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateX(-50%) translateY(0);
+        }
+      }
+
+      .sparkles {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+      }
+
+      .sparkle {
+        position: absolute;
+        color: #ffd700;
+        font-size: 16px;
+        animation: sparkle 2s ease-in-out infinite;
+        opacity: 0;
+      }
+
+      @keyframes sparkle {
+        0%,
+        100% {
+          opacity: 0;
+          transform: scale(0) rotate(0deg);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1) rotate(180deg);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .video-container {
+          height: 500px;
+          margin: 20px;
+        }
+
+        .character {
+          width: 100px;
+          height: 180px;
+          margin: 0 20px;
+        }
+
+        .title {
+          font-size: 24px;
+        }
+
+        .speech-bubble {
+          font-size: 14px;
+          padding: 10px 15px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="video-container">
+      <div class="title">🎉Happy Birthday Paru!🎂</div>
+
+      <div class="scene active" id="mainScene">
+        <!-- Friend Character -->
+        <div class="character friend-character">
+          <div class="character-body">
+            <div class="character-head">
+              <div class="character-face">
+                <div class="eyes">
+                  <div class="eye"></div>
+                  <div class="eye"></div>
+                </div>
+                <div class="mouth"></div>
+              </div>
+            </div>
+            <div class="character-arms">
+              <div class="arm arm-left"></div>
+              <div class="arm arm-right"></div>
+            </div>
+          </div>
+          <div class="speech-bubble friend-bubble">
+            Happy Birthday my bestfriend! 💝
+          </div>
+        </div>
+
+        <!-- Plant Gift -->
+        <div class="plant-pot">
+          <div class="plant">
+            <div class="stem"></div>
+            <div class="leaves">
+              <div class="leaf"></div>
+              <div class="leaf"></div>
+              <div class="leaf"></div>
+              <div class="leaf"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Paru Character -->
+        <div class="character paru-character">
+          <div class="character-body">
+            <div class="character-head">
+              <div class="character-face">
+                <div class="eyes">
+                  <div class="eye"></div>
+                  <div class="eye"></div>
+                </div>
+                <div class="mouth"></div>
+              </div>
+            </div>
+            <div class="character-arms">
+              <div class="arm arm-left"></div>
+              <div class="arm arm-right"></div>
+            </div>
+          </div>
+          <div class="speech-bubble paru-bubble">Thank you my bestu! 🥺💕</div>
+        </div>
+      </div>
+
+      <!-- Floating Hearts -->
+      <div class="hearts" id="heartsContainer"></div>
+
+      <!-- Sparkles -->
+      <div class="sparkles" id="sparklesContainer"></div>
+
+      <!-- Controls -->
+      <div class="controls">
+        <button class="control-btn" onclick="restartAnimation()">
+          🔄 Replay
+        </button>
+        <button class="control-btn" onclick="addMoreHearts()">
+          💕 More Love
+        </button>
+      </div>
+    </div>
+
+    <script>
+      // Animation timing
+      let animationStarted = false;
+
+      function startAnimation() {
+        if (animationStarted) return;
+        animationStarted = true;
+
+        // Create initial hearts
+        setTimeout(() => createHeart(), 2000);
+        setTimeout(() => createHeart(), 2500);
+        setTimeout(() => createHeart(), 3000);
+        setTimeout(() => createHeart(), 5000);
+        setTimeout(() => createHeart(), 5500);
+        setTimeout(() => createHeart(), 6000);
+
+        // Create sparkles
+        setTimeout(() => createSparkle(), 1500);
+        setTimeout(() => createSparkle(), 3500);
+        setTimeout(() => createSparkle(), 4500);
+        setTimeout(() => createSparkle(), 6500);
+      }
+
+      function createHeart() {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.innerHTML = "💖";
+        heart.style.left = Math.random() * 100 + "%";
+        heart.style.top = Math.random() * 100 + "%";
+        heart.style.animationDelay = Math.random() * 2 + "s";
+
+        document.getElementById("heartsContainer").appendChild(heart);
+
+        setTimeout(() => {
+          heart.remove();
+        }, 3000);
+      }
+
+      function createSparkle() {
+        const sparkle = document.createElement("div");
+        sparkle.className = "sparkle";
+        sparkle.innerHTML = "✨";
+        sparkle.style.left = Math.random() * 100 + "%";
+        sparkle.style.top = Math.random() * 100 + "%";
+        sparkle.style.animationDelay = Math.random() * 1 + "s";
+
+        document.getElementById("sparklesContainer").appendChild(sparkle);
+
+        setTimeout(() => {
+          sparkle.remove();
+        }, 2000);
+      }
+
+      function restartAnimation() {
+        // Reset animation
+        animationStarted = false;
+
+        // Clear existing elements
+        document.getElementById("heartsContainer").innerHTML = "";
+        document.getElementById("sparklesContainer").innerHTML = "";
+
+        // Reset speech bubbles
+        const bubbles = document.querySelectorAll(".speech-bubble");
+        bubbles.forEach((bubble) => {
+          bubble.style.animation = "none";
+          bubble.offsetHeight; // Trigger reflow
+          bubble.style.animation = null;
+        });
+
+        // Restart
+        setTimeout(() => {
+          startAnimation();
+        }, 500);
+      }
+
+      function addMoreHearts() {
+        for (let i = 0; i < 5; i++) {
+          setTimeout(() => createHeart(), i * 200);
+        }
+        for (let i = 0; i < 3; i++) {
+          setTimeout(() => createSparkle(), i * 300);
+        }
+      }
+
+      // Start the animation when page loads
+      window.addEventListener("load", () => {
+        setTimeout(() => {
+          startAnimation();
+        }, 1000);
+      });
+
+      // Add some interactive click effects
+      document
+        .querySelector(".plant-pot")
+        .addEventListener("click", function () {
+          this.style.transform = "scale(1.1)";
+          setTimeout(() => {
+            this.style.transform = "scale(1)";
+          }, 200);
+
+          // Create hearts on click
+          for (let i = 0; i < 3; i++) {
+            setTimeout(() => createHeart(), i * 100);
+          }
+        });
+
+      // Character click interactions
+      document.querySelectorAll(".character").forEach((character) => {
+        character.addEventListener("click", function () {
+          this.style.transform = "scale(1.05)";
+          setTimeout(() => {
+            this.style.transform = "scale(1)";
+          }, 300);
+
+          createSparkle();
+        });
+      });
+
+      // Add floating hearts periodically
+      setInterval(() => {
+        if (Math.random() > 0.7) {
+          createHeart();
+        }
+      }, 3000);
+
+      // Add sparkles periodically
+      setInterval(() => {
+        if (Math.random() > 0.8) {
+          createSparkle();
+        }
+      }, 4000);
+    </script>
+  </body>
+</html>
